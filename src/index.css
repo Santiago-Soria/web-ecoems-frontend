@@ -1,0 +1,319 @@
+/* --- RESET Y FUENTES --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+  --primary-color: #1e3c72; /* Azul profundo profesional */
+  --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  --secondary-color: #2a5298;
+  --text-dark: #2c3e50;
+  --text-muted: #7f8c8d;
+  --bg-light: #fdfbfb;
+  --white: #ffffff;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 15px 35px rgba(30, 60, 114, 0.2);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+  width: 100%;
+}
+/* --- LAYOUT SPLIT-SCREEN --- */
+.split-screen {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Panel Izquierdo (Imagen) */
+.left-pane {
+  flex: 1.2; /* Ligeramente más grande que el formulario */
+  background: var(--primary-gradient);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 3rem;
+}
+
+/* Decoración de fondo */
+.left-pane::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Textura sutil */
+  opacity: 0.1;
+}
+
+.left-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 500px;
+}
+
+.hero-img {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease;
+  
+}
+
+.hero-img:hover {
+  transform: scale(1.02);
+}
+
+/* Panel Derecho (Formulario) */
+.right-pane {
+  flex: 1;
+  background: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  /* Animación de entrada suave */
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- TIPOGRAFÍA --- */
+.auth-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+/* --- INPUTS ESTILIZADOS --- */
+.form-group {
+  margin-bottom: 1.5rem; /* Espacio vertical entre inputs */
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  font-size: 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.custom-input:focus {
+  border-color: var(--secondary-color);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+}
+
+.custom-input::placeholder {
+  color: #aab8c2;
+}
+
+/* --- BOTONES PREMIUM --- */
+.btn-custom-primary {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+  margin-top: 1rem; /* Separación del botón con lo de arriba */
+}
+
+.btn-custom-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-custom-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-custom-primary:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- LINKS --- */
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.link-custom {
+  color: var(--secondary-color);
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+}
+
+.link-custom::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--secondary-color);
+  transition: width 0.3s;
+}
+
+.link-custom:hover::after {
+  width: 100%;
+}
+
+/* --- RESPONSIVIDAD --- */
+@media (max-width: 900px) {
+  .left-pane {
+    display: none; /* Ocultar imagen en tablets/móviles */
+  }
+  .auth-container {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  .auth-title {
+    font-size: 2rem;
+  }
+}
+
+/* --- LAYOUT DE CONTENIDO (LMS STYLE) --- */
+.lms-container {
+  display: flex;
+  height: calc(100vh - 80px); /* Restamos la altura del Navbar */
+  overflow: hidden; /* Evitamos scroll en el body */
+}
+
+/* Sidebar de Navegación */
+.lms-sidebar {
+  width: 320px;
+  min-width: 320px;
+  background-color: #fff;
+  border-right: 1px solid #e2e8f0;
+  overflow-y: auto; /* Scroll independiente */
+  padding-bottom: 2rem;
+  transition: transform 0.3s ease;
+}
+
+/* Contenido Principal Scrollable */
+.lms-content {
+  flex: 1;
+  overflow-y: auto; /* Scroll independiente */
+  padding: 2rem;
+  background-color: #f8fafc;
+}
+
+/* Estilos de Items del Sidebar */
+.sidebar-theme-header {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e3c72;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1rem 1.5rem;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sidebar-subitem {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  color: #475569;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.sidebar-subitem:hover {
+  background-color: #f8fafc;
+  color: #1e3c72;
+}
+
+.sidebar-subitem.active {
+  background-color: #e0e7ff;
+  color: #1e3c72;
+  border-left-color: #1e3c72;
+  font-weight: 600;
+}
+
+/* Scrollbar Bonito */
+.lms-sidebar::-webkit-scrollbar,
+.lms-content::-webkit-scrollbar {
+  width: 8px;
+}
+.lms-sidebar::-webkit-scrollbar-track,
+.lms-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.lms-sidebar::-webkit-scrollbar-thumb,
+.lms-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.lms-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 992px) {
+  .lms-container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+  .lms-sidebar {
+    width: 100%;
+    max-height: 300px; /* Acordeón colapsable en móvil */
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .lms-content {
+    overflow: visible;
+  }
+}
