@@ -1,22 +1,38 @@
 import axiosClient from "../api/axiosClient";
 
 export const ExamenService = {
-    // Listar todos los exámenes simulacro disponibles
     listar: async () => {
         const response = await axiosClient.get('/examenes');
         return response.data;
     },
 
-    // Obtener las preguntas de un examen específico
     obtenerPreguntas: async (idExamen) => {
         const response = await axiosClient.get(`/examenes/${idExamen}/preguntas`);
         return response.data;
     },
 
-    // Guardar la calificación final
     guardarResultado: async (resultado) => {
-        // Payload esperado por tu backend: { "idUsuario": 1, "idExamen": 1, "scoreTotal": 8.5 }
         const response = await axiosClient.post('/resultados', resultado);
         return response.data;
+    },
+
+    // Obtiene todos los resultados del usuario para pintar las calificaciones en las tarjetas
+    obtenerResultadosPorUsuario: async (idUsuario) => {
+        try {
+            const response = await axiosClient.get(`/resultados/usuario/${idUsuario}`);
+            return response.data;
+        } catch (error) {
+            return [];
+        }
+    },
+
+    // Obtiene el último intento de un examen específico (Ruta que agregamos al Controller de Java)
+    obtenerResultadoUsuario: async (idUsuario, idExamen) => {
+        try {
+            const response = await axiosClient.get(`/resultados/usuario/${idUsuario}/examen/${idExamen}`);
+            return response.data;
+        } catch (error) {
+            return null; // 404 significa que no hay intentos previos
+        }
     }
 };
