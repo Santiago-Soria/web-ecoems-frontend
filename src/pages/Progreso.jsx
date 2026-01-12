@@ -14,6 +14,12 @@ export default function MiProgreso() {
   const usuario = JSON.parse(localStorage.getItem('usuario'));
   const navigate = useNavigate();
 
+  // Función para descargar el PDF desde tu endpoint de backend
+  const descargarReportePDF = () => {
+    const url = `https://ecoems-api.onrender.com/api/v1/resultados/usuario/${usuario.idUsuario}/pdf`;
+    window.open(url, '_blank');
+  };
+
   useEffect(() => {
     cargarDatos();
   }, []);
@@ -52,11 +58,6 @@ export default function MiProgreso() {
     const materiaFuerte = [...chartMaterias].sort((a, b) => b.prom - a.prom)[0];
     const materiaDebil = [...chartMaterias].sort((a, b) => a.prom - b.prom)[0];
 
-    const tieneActividadReciente = resultados.some(r => {
-        const diff = new Date() - new Date(r.fecha);
-        return diff < (48 * 60 * 60 * 1000); 
-    });
-
     const historialReciente = resultados.slice(-7).map((r, i) => ({
       name: `Examen ${i + 1}`,
       score: r.scoreTotal,
@@ -70,18 +71,15 @@ export default function MiProgreso() {
         historialReciente, 
         total: resultados.length,
         materiaFuerte,
-        materiaDebil,
-        tieneActividadReciente
+        materiaDebil
     };
   }, [resultados]);
-
-  // ELIMINAMOS EL RETURN TEMPRANO DE LOADING AQUÍ
 
   return (
     <div className="bg-light min-vh-100 font-poppins">
       <Navbar />
       
-      {/* EL HEADER (HERO) AHORA SE CARGA SIEMPRE DE INMEDIATO */}
+      {/* HEADER (HERO) */}
       <div className="bg-white border-bottom py-5 mb-5 shadow-sm">
         <div className="container">
           <div className="row align-items-center">
@@ -94,7 +92,23 @@ export default function MiProgreso() {
               <h1 className="display-5 fw-bold text-dark mb-3">
                 Tu evolución, <span style={{ color: '#1e3c72' }}>{usuario?.nombre}</span>
               </h1>
-              <p className="lead text-muted mb-0">Monitorea tu crecimiento académico y asegura tu lugar.</p>
+              <p className="lead text-muted mb-4">Monitorea tu crecimiento académico y asegura tu lugar.</p>
+              
+              {/* BOTONES DE ACCIÓN AÑADIDOS */}
+              <div className="d-flex gap-2">
+                <button 
+                  onClick={() => navigate('/examenes')} 
+                  className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm"
+                >
+                  <i className="fas fa-play me-2"></i>Nuevo Examen
+                </button>
+                <button 
+                  onClick={descargarReportePDF} 
+                  className="btn btn-outline-danger rounded-pill px-4 fw-bold shadow-sm"
+                >
+                  <i className="fas fa-file-pdf me-2"></i>Descargar Reporte PDF
+                </button>
+              </div>
             </div>
             <div className="col-lg-4 text-end d-none d-lg-block">
               <img src="https://cdn-icons-png.flaticon.com/512/3426/3426663.png" alt="Hero" width="130" style={{ filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.1))' }} />
@@ -104,7 +118,6 @@ export default function MiProgreso() {
       </div>
 
       <div className="container pb-5">
-        {/* LÓGICA DE CARGA MOVIDA AQUÍ ABAJO */}
         {loading ? (
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
             <div className="spinner-border text-primary" role="status">
@@ -216,9 +229,18 @@ export default function MiProgreso() {
                                     <small className="d-block fw-bold text-dark">{res.examen?.nombre}</small>
                                     <small className="text-muted" style={{fontSize: '0.7rem'}}>{new Date(res.fecha).toLocaleDateString()}</small>
                                 </div>
-                                <span className={`fw-bold ${res.scoreTotal >= 6 ? 'text-success' : 'text-danger'}`}>{res.scoreTotal}</span>
+                                <div className="d-flex align-items-center gap-3">
+                                  <span className={`fw-bold ${res.scoreTotal >= 6 ? 'text-success' : 'text-danger'}`}>{res.scoreTotal}</span>
+                                </div>
                             </div>
                         ))}
+                        {/* BOTÓN EXTRA AL FINAL DE LA LISTA */}
+                        <button 
+                          onClick={descargarReportePDF}
+                          className="btn btn-link btn-sm text-decoration-none text-muted fw-bold mt-2"
+                        >
+                          Ver historial completo <i className="fas fa-external-link-alt ms-1"></i>
+                        </button>
                     </div>
                 </div>
               </div>
@@ -242,6 +264,7 @@ export default function MiProgreso() {
         }
         .transition-all { transition: all 0.3s ease; }
         .shadow-sm-hover:hover { background: #fff !important; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .btn-outline-danger:hover { color: white !important; }
       `}</style>
     </div>
   );
